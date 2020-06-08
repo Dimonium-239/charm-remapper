@@ -3,12 +3,8 @@
 import os, signal
 import sys
 import subprocess 
-import logging
-import time
 import pyautogui
-import clipboard
 
-logging.basicConfig(filename='remapper.log', format='%(asctime)s - %(message)s', level=logging.INFO, datefmt='%d-%b-%y %H:%M:%S')
 class Remapper: 
     def __init__(self):
         self.qwertyLat = 'QWERTYUIOP[]{}\\ASDFGHJKL;:\'"ZXCVBNM,.//'
@@ -20,7 +16,7 @@ class Remapper:
     def main(self, argv):
         if len(argv) == 2:
             if argv[1] == '-h':
-                print(f'{argv[0]} [-u | -r]')
+                print(f'{argv[0]} [-u | -r]') 
                 sys.exit()
             elif argv[1] in ('-u', '--upper'):
                 self.__sizeChanger(upper=True)
@@ -33,7 +29,7 @@ class Remapper:
 
     def __sizeChanger(self, upper=False, low=False, swapcase=False):
         
-        var = self.getSelectedText()
+        var = self.xcliper(fromPrimary=True)
 
         if upper:
             var = var.upper()
@@ -42,30 +38,20 @@ class Remapper:
         if swapcase:
             var = var.swapcase()
 
-        self.setClipboardData(bytes(var, encoding = 'utf-8') )
-        
-        pyautogui.hotkey('ctrl', 'v')
-
-        subprocess.Popen(['killall', 'xclip'])
+        self.xcliper(var=var, toClipboard=True)
 
 
-    def getSelectedText(self):
-        selectedText = subprocess.Popen(['xclip', '-o'], stdout=subprocess.PIPE) 
-        selectedText.wait()
-        data = selectedText.stdout.read()
-        return data.decode("utf-8") 
-
-    def getClipboardData(self):
-        p = subprocess.Popen(['xclip','-selection', 'clipboard', '-o'], stdout=subprocess.PIPE)
-        retcode = p.wait()
-        data = p.stdout.read()
-        return data
-
-    def setClipboardData(self, data):
-        p = subprocess.Popen(['xclip','-selection','clipboard'], stdin=subprocess.PIPE)
-        p.stdin.write(data)
-        p.stdin.close()
-        retcode = p.wait()
+    def xcliper(self, var='', fromPrimary=False, toClipboard=False):   
+        if fromPrimary:
+            selectedText = subprocess.Popen(['xclip', '-o'], stdout=subprocess.PIPE)  
+            return selectedText.communicate()[0].decode("utf-8") 
+        elif toClipboard:
+            ctrlC = subprocess.Popen(['xclip', '-selection', 'c'], stdin=subprocess.PIPE)
+            ctrlC.communicate(bytes(var, encoding='utf8'))
+            ctrlC.wait()
+            pyautogui.hotkey('ctrl', 'v')
+    
+    # TODO: make normal remapper :) 
 
     def decodeIt(self, var, qwerty1, qwerty2):
         rightDecode = ''
@@ -113,9 +99,16 @@ class Remapper:
                                     stderr=subprocess.PIPE)  #'getactivewindow', 'windowfocus', 
         ctrlV.wait()
         ex = ctrlV.poll()
-
+        logging.info('------------------------------')
+        logging.info('Word before: \t\t' + var)
+        logging.info('Word after : \t\t' + rightDecode)
+        logging.info('xdotool exit code: ' + str(ex))
+        logging.info('xsel exit code: \t' + str(stCode))
+        logging.info('layout change exit code: ' + str(changerEx) + '\n')
+        lytBefor = lytAfter
 
 if __name__ == "__main__" :
+    subprocess.Popen(['killall', 'xclip'])
     rmpr = Remapper()    
     rmpr.main(sys.argv)
     #rmpr.remapper()
