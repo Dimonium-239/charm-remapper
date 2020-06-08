@@ -1,12 +1,14 @@
 #!/usr/bin/env python3.8
 
 import os, signal
+import sys
 import subprocess 
 import logging
 import time
+import pyautogui
+import clipboard
 
 logging.basicConfig(filename='remapper.log', format='%(asctime)s - %(message)s', level=logging.INFO, datefmt='%d-%b-%y %H:%M:%S')
-time.sleep(3)
 class Remapper: 
     def __init__(self):
         self.qwertyLat = 'QWERTYUIOP[]{}\\ASDFGHJKL;:\'"ZXCVBNM,.//'
@@ -14,9 +16,56 @@ class Remapper:
         self.qwertyCirr ='ЙЦУКЕНГШЩЗХЪХЪ/ФЫВАПРОЛДЖЖЭЭЯЧСМИТЬБЮ.,'
         self.qwertyCirr += self.qwertyCirr.lower()
 
-#print(qwertyCirr)
-#print(qwertyLat) #
-#print(len(qwertyCirr) == len(qwertyLat)) ghbdtn vbh
+
+    def main(self, argv):
+        if len(argv) == 2:
+            if argv[1] == '-h':
+                print(f'{argv[0]} [-u | -r]')
+                sys.exit()
+            elif argv[1] in ('-u', '--upper'):
+                self.__sizeChanger(upper=True)
+            elif argv[1] in ('-l', '--lower'):
+                self.__sizeChanger(low=True)
+            elif argv[1] in ('-sc', '--swapcase'):
+                self.__sizeChanger(swapcase=True)
+            elif argv[1] in ('-r', '--remapper'):
+                print('remapper')
+
+    def __sizeChanger(self, upper=False, low=False, swapcase=False):
+        
+        var = self.getSelectedText()
+
+        if upper:
+            var = var.upper()
+        if low:
+            var = var.lower()
+        if swapcase:
+            var = var.swapcase()
+
+        self.setClipboardData(bytes(var, encoding = 'utf-8') )
+        
+        pyautogui.hotkey('ctrl', 'v')
+
+        subprocess.Popen(['killall', 'xclip'])
+
+
+    def getSelectedText(self):
+        selectedText = subprocess.Popen(['xclip', '-o'], stdout=subprocess.PIPE) 
+        selectedText.wait()
+        data = selectedText.stdout.read()
+        return data.decode("utf-8") 
+
+    def getClipboardData(self):
+        p = subprocess.Popen(['xclip','-selection', 'clipboard', '-o'], stdout=subprocess.PIPE)
+        retcode = p.wait()
+        data = p.stdout.read()
+        return data
+
+    def setClipboardData(self, data):
+        p = subprocess.Popen(['xclip','-selection','clipboard'], stdin=subprocess.PIPE)
+        p.stdin.write(data)
+        p.stdin.close()
+        retcode = p.wait()
 
     def decodeIt(self, var, qwerty1, qwerty2):
         rightDecode = ''
@@ -28,7 +77,7 @@ class Remapper:
                 rightDecode += char
         return rightDecode 
 
-    def mainTask(self):
+    def remapper(self):
 
         lytBeforProc = subprocess.Popen(['xkblayout-state', 'print', '"%n"'], stdout=subprocess.PIPE) #setxkbmap
         lytBefor = lytBeforProc.communicate()[0].decode("utf-8") 
@@ -64,15 +113,10 @@ class Remapper:
                                     stderr=subprocess.PIPE)  #'getactivewindow', 'windowfocus', 
         ctrlV.wait()
         ex = ctrlV.poll()
-        logging.info('------------------------------')
-        logging.info('Word before: \t\t' + var)
-        logging.info('Word after : \t\t' + rightDecode)
-        logging.info('xdotool exit code: ' + str(ex))
-        logging.info('xsel exit code: \t' + str(stCode))
-        logging.info('layout change exit code: ' + str(changerEx) + '\n')
-        lytBefor = lytAfter
+
 
 if __name__ == "__main__" :
     rmpr = Remapper()    
-    rmpr.mainTask()
+    rmpr.main(sys.argv)
+    #rmpr.remapper()
     quit(0)
