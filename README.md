@@ -30,14 +30,19 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
 ## Instalation
 
 ### Dependencies
+```
+X-Server  : X11
+Utility   : xclip
+Program   : xkblayout-state
+```
+**NOTE**: All of the above requirements must be met on your computer.
 
-**X-Server:   X11**
+**LINKS:**
 
-**Utility:  [xclip](https://github.com/astrand/xclip)**
+[xclip](https://github.com/astrand/xclip) needed for comunication beetween primary section and clipboard
 
-**Program:  [xkblayout-state](https://github.com/nonpop/xkblayout-state)**
+[xkblayout-state](https://github.com/nonpop/xkblayout-state) needed for change keyboard layout and get layouts name
 
-All of the above requirements must be met on your computer.
 
 ### Setup
 Make git clone of this repo. 
