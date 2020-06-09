@@ -1,4 +1,4 @@
-# chars-general
+# charm-remapper
 Script only for X Window System.
 Help to change case of text or remap letters following current layout.
 
