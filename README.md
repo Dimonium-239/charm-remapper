@@ -2,11 +2,11 @@
 Script only for X Window System.
 Help to change case of text or remap letters following current layout.
 
-# Description
+## Description
 It is script which must be setted to hotkeys for correct work. 
 It have such abilities as change selected text to *upper*, *lower* or *switch case*. Also this script remap chars according current layout. This help you fluent change miswritten text and rewrite it.
 
-# Usage
+## Usage
 
 **NOTE:** this is specified as program only for usage with hotkeys because you must run program when text which must be edited is selected. 
 
@@ -27,9 +27,9 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
       Remap chars of selected text following current layout
 ```
 
-# Instalation
+## Instalation
 
-## Dependencies
+### Dependencies
 
 **X-Server:   X11**
 
@@ -39,7 +39,7 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
 
 All of the above requirements must be met on your computer.
 
-## Setup
+### Setup
 Make git clone of this repo. 
 Run ```chmod u+x remaper.py```
 Set hotkeys for necessary options.
