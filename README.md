@@ -7,6 +7,9 @@ It is script which must be setted to hotkeys for correct work.
 It have such abilities as change selected text to *upper*, *lower* or *switch case*. Also this script remap chars according current layout. This help you fluent change miswritten text and rewrite it.
 
 # Usage
+
+**NOTE:** this is specified as program only for usage with hotkeys because you must run program when text which must be edited is selected. 
+
 ```
   SYNOPSIS
     python remapper.py [OPTIONS]
@@ -23,12 +26,16 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
     -r, --remapper
       Remap chars of selected text following current layout
 ```
+
 # Instalation
+
 ## Dependencies
 
 **X-Server:   X11**
-**Utility:  (xclip)[https://github.com/astrand/xclip]**
-**Program:  (xkblayout-state)[https://github.com/nonpop/xkblayout-state]**
+
+**Utility:  [xclip](https://github.com/astrand/xclip)**
+
+**Program:  [xkblayout-state](https://github.com/nonpop/xkblayout-state)**
 
 All of the above requirements must be met on your computer.
 
@@ -37,5 +44,5 @@ Make git clone of this repo.
 Run ```chmod u+x remaper.py```
 Set hotkeys for necessary options.
 
-*Example:*
+*Example of command/URL, setted as custom hotkeys action:*
 ```/path/to/script/remapper.py -s```
