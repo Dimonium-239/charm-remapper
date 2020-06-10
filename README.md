@@ -51,3 +51,8 @@ Set hotkeys for necessary options.
 
 *Example of command/URL, setted as custom hotkeys action:*
 ```/path/to/script/remapper.py -s```
+
+### License
+MIT License
+
+See ```LICENSE.md``` for detail information.
