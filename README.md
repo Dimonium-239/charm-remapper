@@ -1,5 +1,5 @@
 # charm-remapper
-Script only for X Window System.
+Script is for any system with an X11 implementation.
 Help to change case of text or remap letters following current layout.
 
 ## Description
@@ -31,7 +31,7 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
 
 ### Dependencies
 ```
-X-Server  : X11
+X-Server  : any implementation of X11
 Utility   : xclip
 Program   : xkblayout-state
 ```
