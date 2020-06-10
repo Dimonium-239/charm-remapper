@@ -100,31 +100,48 @@ class Remapper:
             data = json.load(f)
         return data
 
+    def writeLayoutToJSON(self, data): 
+        with open('layouts.json', 'w', encoding='utf8') as f: 
+            json.dump(data, f, indent=4) 
 
     def addNewLayoutCLI(self):
         layout_dict = self.getLayoutJSON()
         new_ley = ''
-        msg = f'''
+        startedLayout = self.getLayoutLang()
+        if startedLayout not in layout_dict:
+            msg = f'''
 Here is CLI for adding new layout. You will get example from english qwerty layout
 and you have to click every button with letters step by step from {bcolors.BOLD}top left corner{bcolors.ENDC} 
 to {bcolors.BOLD}bottom rigth corner (did not press '[~|`]'){bcolors.ENDC} there must be {bcolors.BOLD}{len(layout_dict['English'])} letters{bcolors.ENDC} ,
 not more not less. If you use language where is more than {bcolors.BOLD}{len(layout_dict['English'])} letters{bcolors.ENDC} 
 unfortunatly this version of programm did not support it, 
 but you can input all characters without 'Alt'.
-            '''
-        print(msg)
-        while True:
-            inputStrLen = len(f'({self.getLayoutLang()})>')
-            print(' '*inputStrLen + bcolors.WARNING +layout_dict['English'] + bcolors.ENDC)
-            new_ley = input(f'({bcolors.OKBLUE}{self.getLayoutLang()}{bcolors.ENDC})>')
-            if(len(new_ley) == len(layout_dict['English']) and input('Save this layout ? ' + f'[{bcolors.UNDERLINE}Y{bcolors.ENDC}/N]\n') not in ('Y', 'y', 'yes')):
-                break
-            else:
-                print(f'\n{bcolors.FAIL}ERROR: You must map one letter from your layout to one letter from example{bcolors.ENDC}')
-                if(input('Do you want continue ? ' + f'[{bcolors.UNDERLINE}Y{bcolors.ENDC}/N]\n') in ('Y', 'y', 'yes')):
+                '''
+            print(msg)
+            while True:
+                if self.getLayoutLang() in layout_dict:
+                    print(f'{bcolors.FAIL}ERROR: layout changet to one whitch is present in the base. Program halted {bcolors.ENDC}')
                     break
+                inputStrLen = len(f'({startedLayout})>')
+                print(' '*inputStrLen + bcolors.OKGREEN +layout_dict['English'] + bcolors.ENDC)
+                new_ley = input(f'({bcolors.OKBLUE}{self.getLayoutLang()}{bcolors.ENDC})>')
                 
-        print(new_ley)
+                if startedLayout != self.getLayoutLang() and self.getLayoutLang() not in layout_dict:
+                    print(f'\n{bcolors.WARNING}WARNING: layout changed from {startedLayout} to {self.getLayoutLang()} {bcolors.ENDC}\n')
+                    startedLayout= self.getLayoutLang()
+                    continue
+                elif(len(new_ley) == len(layout_dict['English']) and input('Save this layout ? ' + f'[{bcolors.UNDERLINE}Y [1]{bcolors.ENDC}/N [0]]\n') not in ('N', 'n', 'no', '0')):
+                    print(new_ley)
+                    layout_dict[startedLayout] = new_ley
+                    self.writeLayoutToJSON(layout_dict)
+                    print(f'{startedLayout} leyout is succesfully added, now you can use this program with -r option')
+                    break
+                else:
+                    print(f'\n{bcolors.FAIL}ERROR: You must map one letter from your layout to one letter from example{bcolors.ENDC}')
+                    if(input('Do you want continue ? ' + f'[{bcolors.UNDERLINE}Y [1]{bcolors.ENDC}/N [0]]\n') in ('N', 'n', 'no', '0')):
+                        break
+        else:
+            print(f'{bcolors.WARNING}Such layout is present in the base{bcolors.ENDC}') 
 
 
 
