@@ -13,13 +13,14 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
   - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>4</kbd> -- for swapcase
   - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>5</kbd> -- for capitalize
   
-## Screenshots 
+## Demonstration
 - Remapper in action:
 
 ![Remapper in action](https://i.imgur.com/eJEx9Ue.gif)
 
-- Adding layout:
+- Adding new layout:
 
+![Adding new layout](https://i.imgur.com/g9kYXZO.gif)
 
 
 ## Usage
