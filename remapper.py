@@ -31,23 +31,30 @@ class Remapper:
             Swap case of selected text
         -r, --remapper
             Remap chars of selected text following current layout
+        -c, --capitalize
+            Change all first letters of selected text to capital leters
+        -a, --add
+            Added new layout to file
                     ''') 
                 sys.exit()
             elif argv[1] in ('-u', '--upper'):
-                self.__sizeChanger(upper=True)
+                self.__selectedTextChanger(upper=True)
             elif argv[1] in ('-l', '--lower'):
-                self.__sizeChanger(low=True)
+                self.__selectedTextChanger(low=True)
             elif argv[1] in ('-s', '--swapcase'):
-                self.__sizeChanger(swapcase=True)
+                self.__selectedTextChanger(swapcase=True)
             elif argv[1] in ('-r', '--remapper'):
-                self.remapper()
+                self.__selectedTextChanger(remapper=True)
+            elif argv[1] in ('-c', '--capitalize'):
+                self.__selectedTextChanger(capitalize=True)
             elif argv[1] in ('-a', '--add'):
                 self.addNewLayoutCLI()
             else:
                 print(f'Try \'{argv[0]} -h\' for more information.')
 
 
-    def __sizeChanger(self, upper=False, low=False, swapcase=False):
+    def __selectedTextChanger(self, upper=False, low=False, swapcase=False, remapper=False, \
+                                    capitalize=False):
         
         clipBuff = self.xcliper(fromClipboard=True)
         var = self.xcliper(fromPrimary=True)
@@ -58,10 +65,19 @@ class Remapper:
             var = var.lower()
         if swapcase:
             var = var.swapcase()
+        if remapper:
+            qwerty1 = self.getLayoutLang()
+            changer = subprocess.Popen(['xkblayout-state', 'set', '+1']) 
+            changer.poll()
+            qwerty2 = self.getLayoutLang()
+            var = self.decodeIt(var, qwerty1, qwerty2)
+        if capitalize:
+            var = ' '.join([a[0].upper() + a[1:] for a in var.split(' ')])
 
         self.xcliper(var=var, toClipboard=True)
         pyautogui.hotkey('ctrl', 'v')
         self.xcliper(var=clipBuff, toClipboard=True)
+
 
     def xcliper(self, var='', fromPrimary=False, fromClipboard=False, toClipboard=False):   
         if fromPrimary:
@@ -76,17 +92,24 @@ class Remapper:
             ctrlC.communicate(bytes(var, encoding='utf8'))
             ctrlC.wait()
 
-    # TODO: make normal remapper :) 
 
-    def decodeIt(self, var, qwerty1, qwerty2):
-        rightDecode = ''
-        for char in var:
-            try:
-                index = qwerty1.index(char)
-                rightDecode += qwerty2[index]
-            except ValueError:
-                rightDecode += char
-        return rightDecode 
+    def decodeIt(self, var, lang1, lang2):
+        layout_dict = self.getLayoutJSON()
+        if lang1 in layout_dict and lang2 in layout_dict:
+            qwerty1 = layout_dict[lang1] 
+            qwerty2 = layout_dict[lang2]
+            qwerty1 += qwerty1.swapcase()
+            qwerty2 += qwerty2.swapcase()
+            rightDecode = ''
+            for char in var:
+                try:
+                    index = qwerty1.index(char)
+                    rightDecode += qwerty2[index]
+                except ValueError:
+                    rightDecode += char
+            return rightDecode 
+        else:
+            return var
 
 
     def getLayoutLang(self):
@@ -96,12 +119,12 @@ class Remapper:
         return lytBefor
 
     def getLayoutJSON(self):
-        with open('layouts.json') as f:
+        with open(os.path.dirname(sys.argv[0]) + '/layouts.json') as f:
             data = json.load(f)
         return data
 
     def writeLayoutToJSON(self, data): 
-        with open('layouts.json', 'w', encoding='utf8') as f: 
+        with open(os.path.dirname(sys.argv[0]) + '/layouts.json', 'w', encoding='utf8') as f: 
             json.dump(data, f, indent=4) 
 
     def addNewLayoutCLI(self):
@@ -144,50 +167,6 @@ but you can input all characters without 'Alt'.
             print(f'{bcolors.WARNING}Such layout is present in the base{bcolors.ENDC}') 
 
 
-
-    def remapper(self):
-
-        pass
-        # TODO: smthing with this mess!!!
-
-        #print(data[lytBefor])
-
-        #subprocess.Popen(['killall', 'xkblayout-state'])
-
-        # lytBefor = lytBefor[1:-1]
-
-        # changer = subprocess.Popen(['xkblayout-state', 'set', '+1'])
-        # changerEx = changer.poll()
-
-        # var = ''
-
-        # lytAfterProc = subprocess.Popen(['xkblayout-state', 'print', '"%n"'], stdout=subprocess.PIPE) #setxkbmap
-        # lytAfter = lytAfterProc.communicate()[0].decode("utf-8") 
-        # lytAfterProc.poll()
-        # lytAfter = lytAfter[1:-1]
-
-        # selectedText = subprocess.Popen(['xsel'], stdout=subprocess.PIPE) 
-        # var = selectedText.communicate()[0].decode("utf-8") 
-        # var = var
-        # print(var)
-        # stCode = selectedText.poll()
-
-
-        # rightDecode = ''                                     
-        # print(lytBefor, 'Polish')
-        # if lytBefor == 'Polish':
-        #     rightDecode = self.decodeIt(var, self.qwertyLat, self.qwertyCirr)
-            
-        # if lytBefor == 'Russian' or lytBefor == 'Ukrainian':
-        #     rightDecode = self.decodeIt(var, self.qwertyCirr, self.qwertyLat)
-
-        # ctrlV = subprocess.Popen(['xdotool', 'getactivewindow', 'windowfocus', 'type', rightDecode], stdout=subprocess.PIPE, \
-        #                             stderr=subprocess.PIPE)  #'getactivewindow', 'windowfocus', 
-        # ctrlV.wait()
-        # ex = ctrlV.poll()
-
 if __name__ == "__main__" :
     subprocess.Popen(['killall', 'xclip'])
     rmpr = Remapper(sys.argv)    
-    #rmpr.main()
-    quit(0)
