@@ -6,7 +6,7 @@ Help to change case of text or remap letters following current layout.
 It is script which must be setted to hotkeys for correct work. 
 It have such abilities as change selected text to *upper*, *lower* or *switch case*. Also this script remap chars according current layout. This help you fluent change miswritten text and rewrite it.
 
-**For me good hotkeys was:***
+**For me good hotkeys was:**
   - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd> -- for remapper
   - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>2</kbd> -- for upper
   - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>3</kbd> -- for lower
