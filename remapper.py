@@ -133,17 +133,17 @@ class Remapper:
         startedLayout = self.getLayoutLang()
         if startedLayout not in layout_dict:
             msg = f'''
-Here is CLI for adding new layout. You will get example from english qwerty layout
+Here is CLI for adding new layout. You will get example from English qwerty layout
 and you have to click every button with letters step by step from {bcolors.BOLD}top left corner{bcolors.ENDC} 
-to {bcolors.BOLD}bottom rigth corner (did not press '[~|`]'){bcolors.ENDC} there must be {bcolors.BOLD}{len(layout_dict['English'])} letters{bcolors.ENDC} ,
+to {bcolors.BOLD}bottom rigth corner (do not press '[~|`]'){bcolors.ENDC} there must be {bcolors.BOLD}{len(layout_dict['English'])} letters{bcolors.ENDC} ,
 not more not less. If you use language where is more than {bcolors.BOLD}{len(layout_dict['English'])} letters{bcolors.ENDC} 
-unfortunatly this version of programm did not support it, 
+unfortunatly this version of programm does not support it, 
 but you can input all characters without 'Alt'.
                 '''
             print(msg)
             while True:
                 if self.getLayoutLang() in layout_dict:
-                    print(f'{bcolors.FAIL}ERROR: layout changet to one whitch is present in the base. Program halted {bcolors.ENDC}')
+                    print(f'{bcolors.FAIL}ERROR: layout changed to one whitch is present in the base. Program halted {bcolors.ENDC}')
                     break
                 inputStrLen = len(f'({startedLayout})>')
                 print(' '*inputStrLen + bcolors.OKGREEN +layout_dict['English'] + bcolors.ENDC)
@@ -157,11 +157,11 @@ but you can input all characters without 'Alt'.
                     print(new_ley)
                     layout_dict[startedLayout] = new_ley
                     self.writeLayoutToJSON(layout_dict)
-                    print(f'{startedLayout} leyout is succesfully added, now you can use this program with -r option')
+                    print(f'{startedLayout} layout is succesfully added, now you can use this program with -r option')
                     break
                 else:
                     print(f'\n{bcolors.FAIL}ERROR: You must map one letter from your layout to one letter from example{bcolors.ENDC}')
-                    if(input('Do you want continue ? ' + f'[{bcolors.UNDERLINE}Y [1]{bcolors.ENDC}/N [0]]\n') in ('N', 'n', 'no', '0')):
+                    if(input('Do you want to continue ? ' + f'[{bcolors.UNDERLINE}Y [1]{bcolors.ENDC}/N [0]]\n') in ('N', 'n', 'no', '0')):
                         break
         else:
             print(f'{bcolors.WARNING}Such layout is present in the base{bcolors.ENDC}') 
