@@ -6,6 +6,23 @@ Help to change case of text or remap letters following current layout.
 It is script which must be setted to hotkeys for correct work. 
 It have such abilities as change selected text to *upper*, *lower* or *switch case*. Also this script remap chars according current layout. This help you fluent change miswritten text and rewrite it.
 
+**For me good hotkeys was:**
+  - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd> -- for remapper
+  - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>2</kbd> -- for upper
+  - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>3</kbd> -- for lower
+  - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>4</kbd> -- for swapcase
+  - <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>5</kbd> -- for capitalize
+  
+## Demonstration
+- Remapper in action:
+
+![Remapper in action](https://i.imgur.com/eJEx9Ue.gif)
+
+- Adding new layout:
+
+![Adding new layout](https://i.imgur.com/g9kYXZO.gif)
+
+
 ## Usage
 
 **NOTE:** this is specified as program only for usage with hotkeys because you must run program when text which must be edited is selected. 
@@ -16,15 +33,19 @@ It have such abilities as change selected text to *upper*, *lower* or *switch ca
     
   OPTIONS
     -h, --help
-      Show short info about options
+        Show short info about options
     -u, --upper
-      Set selected text to upper case
+        Set selected text to upper case
     -l, --lower
-      Set selected text to lower case
+        Set selected text to lower case
     -s, --swapcase
-      Swap case of selected text
+        Swap case of selected text
     -r, --remapper
-      Remap chars of selected text following current layout
+        Remap chars of selected text following current layout
+    -c, --capitalize
+        Change all first letters of selected text to capital leters
+    -a, --add
+        Added new layout to file
 ```
 
 ## Instalation
