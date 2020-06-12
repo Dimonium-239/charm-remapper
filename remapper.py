@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python
 
 import os, sys, signal
 import subprocess 
@@ -38,22 +38,22 @@ class Remapper:
                     ''') 
                 sys.exit()
             elif argv[1] in ('-u', '--upper'):
-                self.__selectedTextChanger(upper=True)
+                self.selectedTextChanger(upper=True)
             elif argv[1] in ('-l', '--lower'):
-                self.__selectedTextChanger(low=True)
+                self.selectedTextChanger(low=True)
             elif argv[1] in ('-s', '--swapcase'):
-                self.__selectedTextChanger(swapcase=True)
+                self.selectedTextChanger(swapcase=True)
             elif argv[1] in ('-r', '--remapper'):
-                self.__selectedTextChanger(remapper=True)
+                self.selectedTextChanger(remapper=True)
             elif argv[1] in ('-c', '--capitalize'):
-                self.__selectedTextChanger(capitalize=True)
+                self.selectedTextChanger(capitalize=True)
             elif argv[1] in ('-a', '--add'):
                 self.addNewLayoutCLI()
             else:
                 print(f'Try \'{argv[0]} -h\' for more information.')
 
 
-    def __selectedTextChanger(self, upper=False, low=False, swapcase=False, remapper=False, \
+    def selectedTextChanger(self, upper=False, low=False, swapcase=False, remapper=False, \
                                     capitalize=False):
         
         clipBuff = self.xcliper(fromClipboard=True)
